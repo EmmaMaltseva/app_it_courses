@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ])),
       child: Scaffold(
         //чаще всего отдельный экран
+        ///изменения
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
