@@ -15,7 +15,7 @@ class ItCoursesApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           //общие стили для виджетов, например scaffoldBackgroundColor
-          primaryColor: Color.fromARGB(156, 31, 46, 140),
+          primaryColor: const Color.fromRGBO(112, 130, 255, 100),
           useMaterial3: true,
           fontFamily: 'Inter'),
       home: const MyHomePage(), //базовая страница приложения
@@ -23,105 +23,55 @@ class ItCoursesApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var _selectedPageIndex = 0;
-  final _pageController = PageController();
-
-  @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
-      body: PageView(
-          controller: _pageController,
-          onPageChanged: (value) => setState(() {
-                _selectedPageIndex = value;
-              }),
-          children: const [
-            CoursesScreen(),
-            Scaffold(),
-            Scaffold(),
-            Scaffold(),
-          ]),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: theme.primaryColor,
-        unselectedItemColor: theme.hintColor,
-        currentIndex: _selectedPageIndex,
-        onTap: _openPage,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Курсы'),
-          BottomNavigationBarItem(icon: Icon(Icons.percent), label: 'Акции'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Школы'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Настройки'),
+      body: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.all(24.0),
+            sliver: SliverAppBar(
+              leading: SvgPicture.asset(
+                'assets/svg/logo.svg',
+                height: 38,
+              ),
+              title: const Text('it.courses'),
+              titleTextStyle:
+                  const TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
+              surfaceTintColor: Colors.transparent,
+              pinned: true,
+              snap: true,
+              floating: true,
+            ),
+          ),
+          /*const SliverToBoxAdapter(
+              child:
+                  SizedBox(height: 16)), //расстояние между апбаром и сливерлистом*/
+          const SliverToBoxAdapter(
+            child: PreferredSize(
+              preferredSize: Size.fromHeight(70),
+              child: SearchButton(), //extract widget строки поиска
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Text(
+                'Мои курсы',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+          SliverList.builder(
+              itemBuilder: (context, index) =>
+                  const RhymeListCard() //extract widget карточка рифма с лайком
+              )
         ],
       ),
-    );
-  }
-
-  void _openPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-      _pageController.jumpToPage(index);
-    });
-  }
-}
-
-class CoursesScreen extends StatelessWidget {
-  const CoursesScreen({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(24.0),
-          sliver: SliverAppBar(
-            leading: SvgPicture.asset(
-              'assets/svg/logo.svg',
-              height: 38,
-            ),
-            title: const Text('it.courses'),
-            titleTextStyle:
-                const TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
-            surfaceTintColor: Colors.transparent,
-            pinned: true,
-            snap: true,
-            floating: true,
-          ),
-        ),
-        /*const SliverToBoxAdapter(
-            child:
-                SizedBox(height: 16)), //расстояние между апбаром и сливерлистом*/
-        const SliverToBoxAdapter(
-          child: PreferredSize(
-            preferredSize: Size.fromHeight(70),
-            child: SearchButton(), //extract widget строки поиска
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.all(24.0),
-            child: Text(
-              'Мои курсы',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
-        const SliverToBoxAdapter(child: SizedBox(height: 16)),
-        SliverList.builder(
-            itemBuilder: (context, index) =>
-                const RhymeListCard() //extract widget карточка рифма с лайком
-            )
-      ],
     );
   }
 }
