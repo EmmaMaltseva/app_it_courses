@@ -1,5 +1,5 @@
+import 'package:app_it_courses/router/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const ItCoursesApp());
@@ -7,218 +7,27 @@ void main() {
 
 //StatelessWidget - нет своего состояния
 //StatefulWidget - есть свое состояние
-class ItCoursesApp extends StatelessWidget {
+class ItCoursesApp extends StatefulWidget {
   const ItCoursesApp({super.key});
+
+  @override
+  State<ItCoursesApp> createState() => _ItCoursesAppState();
+}
+
+class _ItCoursesAppState extends State<ItCoursesApp> {
+  final _router = AppRouter();
+
   @override
   Widget build(BuildContext context) {
     //метод build, чтобы что-то отстроить
-    return MaterialApp(
+    return MaterialApp.router(
+      title: 'it.courses',
       theme: ThemeData(
           //общие стили для виджетов, например scaffoldBackgroundColor
           primaryColor: Color.fromARGB(156, 31, 46, 140),
           useMaterial3: true,
           fontFamily: 'Inter'),
-      home: const MyHomePage(), //базовая страница приложения
+      routerConfig: _router.config(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var _selectedPageIndex = 0;
-  final _pageController = PageController();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Scaffold(
-      body: PageView(
-          controller: _pageController,
-          onPageChanged: (value) => setState(() {
-                _selectedPageIndex = value;
-              }),
-          children: const [
-            CoursesScreen(),
-            Scaffold(),
-            Scaffold(),
-            Scaffold(),
-          ]),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: theme.primaryColor,
-        unselectedItemColor: theme.hintColor,
-        currentIndex: _selectedPageIndex,
-        onTap: _openPage,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Курсы'),
-          BottomNavigationBarItem(icon: Icon(Icons.percent), label: 'Акции'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Школы'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Настройки'),
-        ],
-      ),
-    );
-  }
-
-  void _openPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-      _pageController.jumpToPage(index);
-    });
-  }
-}
-
-class CoursesScreen extends StatelessWidget {
-  const CoursesScreen({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(24.0),
-          sliver: SliverAppBar(
-            leading: SvgPicture.asset(
-              'assets/svg/logo.svg',
-              height: 38,
-            ),
-            title: const Text('it.courses'),
-            titleTextStyle:
-                const TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
-            surfaceTintColor: Colors.transparent,
-            pinned: true,
-            snap: true,
-            floating: true,
-          ),
-        ),
-        /*const SliverToBoxAdapter(
-            child:
-                SizedBox(height: 16)), //расстояние между апбаром и сливерлистом*/
-        const SliverToBoxAdapter(
-          child: PreferredSize(
-            preferredSize: Size.fromHeight(70),
-            child: SearchButton(), //extract widget строки поиска
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.all(24.0),
-            child: Text(
-              'Мои курсы',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
-        const SliverToBoxAdapter(child: SizedBox(height: 16)),
-        SliverList.builder(
-            itemBuilder: (context, index) =>
-                const RhymeListCard() //extract widget карточка рифма с лайком
-            )
-      ],
-    );
-  }
-}
-
-//контенер для стилизации карточки истории рифмы и карточки рифмы с лайком
-class BaseContainer extends StatelessWidget {
-  const BaseContainer({
-    super.key,
-    required this.child,
-    required this.width,
-    this.margin, //если свойство не нужно везде задавать
-    this.padding = const EdgeInsets.only(left: 12),
-  });
-
-  final double width;
-  final Widget child;
-  final EdgeInsets? margin; //если свойство не нужно везде задавать
-  final EdgeInsets padding;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      width: width,
-      margin: margin,
-      padding: padding,
-      decoration: BoxDecoration(
-          color: theme.cardColor, borderRadius: BorderRadius.circular(12)),
-      child: child,
-    );
-  }
-}
-
-//виджет с карточками рифмы и лайка
-class RhymeListCard extends StatelessWidget {
-  const RhymeListCard({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return BaseContainer(
-      margin: EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
-      width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Image(
-            height: 100,
-            image: NetworkImage(
-                'https://all-events.ru/upload/iblock/a60/it8415tgvka1gch4hvu57k23d4qhllwd.png'),
-          ),
-          Text('Курс', style: theme.textTheme.bodyMedium),
-          IconButton(
-              onPressed: () {},
-              icon:
-                  Icon(Icons.favorite, color: theme.hintColor.withOpacity(0.3)))
-        ],
-      ),
-    );
-  }
-}
-
-//виджет строки поиска рифмы
-class SearchButton extends StatelessWidget {
-  const SearchButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-        width: double.infinity, //во всю ширину
-        margin: EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 8),
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-            color: theme.hintColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16)),
-        child: Row(
-          children: [
-            Icon(
-              Icons.search,
-              color: Colors.grey[700],
-            ),
-            SizedBox(
-              width: 8,
-            ),
-            Text(
-              'Поиск курса...',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: theme.hintColor.withOpacity(0.5),
-                  fontWeight: FontWeight.w400),
-            ),
-          ],
-        ));
   }
 }
