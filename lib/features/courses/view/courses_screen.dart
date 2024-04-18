@@ -1,154 +1,134 @@
+import 'package:app_it_courses/features/courses/model/course_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 @RoutePage()
-class CoursesScreen extends StatelessWidget {
+class CoursesScreen extends StatefulWidget {
   const CoursesScreen({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(24.0),
-          sliver: SliverAppBar(
-            leading: SvgPicture.asset(
-              'assets/svg/logo.svg',
-              height: 38,
-            ),
-            title: const Text('it.courses'),
-            titleTextStyle:
-                const TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
-            surfaceTintColor: Colors.transparent,
-            pinned: true,
-            snap: true,
-            floating: true,
-          ),
-        ),
-        /*const SliverToBoxAdapter(
-            child:
-                SizedBox(height: 16)), //расстояние между апбаром и сливерлистом*/
-        const SliverToBoxAdapter(
-          child: PreferredSize(
-            preferredSize: Size.fromHeight(70),
-            child: SearchButton(), //extract widget строки поиска
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.all(24.0),
-            child: Text(
-              'Мои курсы',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
-        const SliverToBoxAdapter(child: SizedBox(height: 16)),
-        SliverList.builder(
-            itemBuilder: (context, index) =>
-                const RhymeListCard() //extract widget карточка рифма с лайком
-            )
-      ],
-    );
-  }
+  State<CoursesScreen> createState() => _CoursesScreenState();
 }
 
-//контенер для стилизации карточки истории рифмы и карточки рифмы с лайком
-class BaseContainer extends StatelessWidget {
-  const BaseContainer({
-    super.key,
-    required this.child,
-    required this.width,
-    this.margin, //если свойство не нужно везде задавать
-    this.padding = const EdgeInsets.only(left: 12),
-  });
+class _CoursesScreenState extends State<CoursesScreen> {
+  static List<CourseModel> main_courses_list = [
+    CourseModel(
+        "Профессия разработчик на Python",
+        "https://i0.wp.com/junilearning.com/wp-content/uploads/2020/06/python-programming-language.webp?fit=1920%2C1920&ssl=1",
+        137900),
+    CourseModel(
+        "Профессия разработчик на Python",
+        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
+        137900),
+    CourseModel(
+        "Профессия разработчик на Python",
+        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
+        137900),
+    CourseModel(
+        "Умная разработчик на Python",
+        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
+        137900),
+    CourseModel(
+        "Профессия разработчик на Python",
+        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
+        137900),
+  ];
 
-  final double width;
-  final Widget child;
-  final EdgeInsets? margin; //если свойство не нужно везде задавать
-  final EdgeInsets padding;
+  List<CourseModel> display_list = List.from(main_courses_list);
+
+  //функция обновления display_list выводимого списка курсов
+  void updateList(String value) {
+    setState(() {
+      display_list = main_courses_list
+          .where((element) =>
+              element.title!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      width: width,
-      margin: margin,
-      padding: padding,
-      decoration: BoxDecoration(
-          color: theme.cardColor, borderRadius: BorderRadius.circular(12)),
-      child: child,
-    );
-  }
-}
-
-//виджет с карточками рифмы и лайка
-class RhymeListCard extends StatelessWidget {
-  const RhymeListCard({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return BaseContainer(
-      margin: EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
-      width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Image(
-            height: 100,
-            image: NetworkImage(
-                'https://all-events.ru/upload/iblock/a60/it8415tgvka1gch4hvu57k23d4qhllwd.png'),
+    return Scaffold(
+        backgroundColor: Color.fromARGB(255, 232, 232, 255),
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 232, 232, 255),
+          elevation: 0.0,
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Мои курсы",
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              TextField(
+                onChanged: (value) => updateList(value),
+                decoration: InputDecoration(
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: "Поиск курса...",
+                    prefixIcon: const Icon(Icons.search)),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Expanded(
+                child: display_list.length == 0
+                    ? const Center(
+                        child: Text("Результат не найден",
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.normal)),
+                      )
+                    : ListView.builder(
+                        itemCount: display_list.length,
+                        itemBuilder: (context, index) => ListTile(
+                            contentPadding: EdgeInsets.all(8.0),
+                            title: Text(
+                              display_list[index].title!,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w300, fontSize: 15),
+                            ),
+                            subtitle: Text(
+                              '${display_list[index].price!}',
+                              style: TextStyle(fontSize: 13),
+                            ),
+                            leading: SizedBox(
+                              height: 200.0,
+                              width: 200.0, // fixed width and height
+                              child: Image.network(display_list[index].url!,
+                                  height: 200, fit: BoxFit.fill),
+                            )),
+                      ),
+              )
+            ],
           ),
-          Text('Курс', style: theme.textTheme.bodyMedium),
-          IconButton(
-              onPressed: () {},
-              icon:
-                  Icon(Icons.favorite, color: theme.hintColor.withOpacity(0.3)))
-        ],
-      ),
-    );
-  }
-}
-
-//виджет строки поиска рифмы
-class SearchButton extends StatelessWidget {
-  const SearchButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-        width: double.infinity, //во всю ширину
-        margin: EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 8),
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-            color: theme.hintColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16)),
-        child: Row(
-          children: [
-            Icon(
-              Icons.search,
-              color: Colors.grey[700],
-            ),
-            SizedBox(
-              width: 8,
-            ),
-            Text(
-              'Поиск курса...',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: theme.hintColor.withOpacity(0.5),
-                  fontWeight: FontWeight.w400),
-            ),
-          ],
         ));
   }
 }
+
+      /*Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 180, 199, 254),
+                Color.fromARGB(255, 255, 255, 255),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp),
+        ),
+      ),*/
