@@ -6,4 +6,4 @@ https://www.figma.com/file/6d7whefLdllIH8hSf9gBJH/App_it_courses?type=design&nod
 # Как запустить?
 - git clone <ссылка_на_репозиторий>
 - flutter pub get
-- start and debag
+- start and debug
