@@ -15,25 +15,15 @@ class CoursesScreen extends StatefulWidget {
 
 class _CoursesScreenState extends State<CoursesScreen> {
   static List<CourseModel> main_courses_list = [
-    CourseModel(
-        "Профессия разработчик на Python",
-        "https://i0.wp.com/junilearning.com/wp-content/uploads/2020/06/python-programming-language.webp?fit=1920%2C1920&ssl=1",
+    CourseModel("Профессия разработчик на Python", "assets/svg/skypro_logo.svg",
+        137900),
+    CourseModel("Профессия разработчик на Python", "assets/svg/skypro_logo.svg",
+        137900),
+    CourseModel("Профессия разработчик на Python", "assets/svg/skypro_logo.svg",
         137900),
     CourseModel(
-        "Профессия разработчик на Python",
-        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
-        137900),
-    CourseModel(
-        "Профессия разработчик на Python",
-        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
-        137900),
-    CourseModel(
-        "Умная разработчик на Python",
-        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
-        137900),
-    CourseModel(
-        "Профессия разработчик на Python",
-        "https://blog.skillfactory.ru/wp-content/uploads/2023/07/img_1303.png",
+        "Умная разработчик на Python", "assets/svg/skypro_logo.svg", 137900),
+    CourseModel("Профессия разработчик на Python", "assets/svg/skypro_logo.svg",
         137900),
   ];
 
@@ -97,21 +87,24 @@ class _CoursesScreenState extends State<CoursesScreen> {
                         itemBuilder: (context, index) => Card(
                           child: Column(
                             children: [
-                              Text(
-                                display_list[index].title!,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w300, fontSize: 15),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    display_list[index].url!,
+                                    height: 14,
+                                  ),
+                                  Text(
+                                    display_list[index].title!,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 15),
+                                  ),
+                                ],
                               ),
                               Text(
                                 '${display_list[index].price!}',
                                 style: TextStyle(fontSize: 13),
                               ),
-                              SizedBox(
-                                height: 200.0,
-                                width: 200.0, // fixed width and height
-                                child: Image.network(display_list[index].url!,
-                                    height: 200, fit: BoxFit.fill),
-                              )
                             ],
                           ),
                         ),
