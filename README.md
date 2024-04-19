@@ -4,6 +4,6 @@ https://www.figma.com/file/6d7whefLdllIH8hSf9gBJH/App_it_courses?type=design&nod
 ![image](https://github.com/EmmaMaltseva/app_it_courses/assets/92587254/f8ef90e2-89ad-4d19-97e8-ef82adc4b1d4)
 
 # Как запустить?
-git clone <ссылка_на_репазиторий>
-flutter pub get
-start and debag
+- git clone <ссылка_на_репазиторий>
+- flutter pub get
+- start and debag
