@@ -94,23 +94,27 @@ class _CoursesScreenState extends State<CoursesScreen> {
                       )
                     : ListView.builder(
                         itemCount: display_list.length,
-                        itemBuilder: (context, index) => ListTile(
-                            contentPadding: EdgeInsets.all(8.0),
-                            title: Text(
-                              display_list[index].title!,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w300, fontSize: 15),
-                            ),
-                            subtitle: Text(
-                              '${display_list[index].price!}',
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            leading: SizedBox(
-                              height: 200.0,
-                              width: 200.0, // fixed width and height
-                              child: Image.network(display_list[index].url!,
-                                  height: 200, fit: BoxFit.fill),
-                            )),
+                        itemBuilder: (context, index) => Card(
+                          child: Column(
+                            children: [
+                              Text(
+                                display_list[index].title!,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w300, fontSize: 15),
+                              ),
+                              Text(
+                                '${display_list[index].price!}',
+                                style: TextStyle(fontSize: 13),
+                              ),
+                              SizedBox(
+                                height: 200.0,
+                                width: 200.0, // fixed width and height
+                                child: Image.network(display_list[index].url!,
+                                    height: 200, fit: BoxFit.fill),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
               )
             ],
@@ -119,7 +123,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
   }
 }
 
-      /*Container(
+/*Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
               colors: [
