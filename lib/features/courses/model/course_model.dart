@@ -1,7 +1,12 @@
 class CourseModel {
   String? title;
-  String? url;
+  String? logo;
+  String? format;
+  String? dlitelnost;
+  String? intensivnost;
   double? price;
+  String? url;
 
-  CourseModel(this.title, this.url, this.price);
+  CourseModel(this.title, this.logo, this.format, this.dlitelnost,
+      this.intensivnost, this.price, this.url);
 }

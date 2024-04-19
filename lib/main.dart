@@ -24,7 +24,7 @@ class _ItCoursesAppState extends State<ItCoursesApp> {
       title: 'it.courses',
       theme: ThemeData(
           //общие стили для виджетов, например scaffoldBackgroundColor
-          primaryColor: Color.fromARGB(156, 31, 46, 140),
+          primaryColor: const Color.fromARGB(156, 31, 46, 140),
           useMaterial3: true,
           fontFamily: 'Inter'),
       routerConfig: _router.config(),
