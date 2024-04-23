@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 @RoutePage()
 class CoursesScreen extends StatefulWidget {
@@ -16,6 +19,17 @@ class CoursesScreen extends StatefulWidget {
 }
 
 class _CoursesScreenState extends State<CoursesScreen> {
+  void initFirebase() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initFirebase();
+  }
+
   static List<CourseModel> main_courses_list = [
     CourseModel(
         "Профессия разработчик на Python",
@@ -90,7 +104,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 "assets/svg/logo.svg",
               ),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(80),
+                preferredSize: const Size.fromHeight(81),
                 child: Container(
                   margin: EdgeInsets.only(bottom: 12, top: 12),
                   width: double.infinity,
@@ -221,8 +235,22 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                   Color.fromARGB(255, 130, 112, 255),
                               elevation: 0,
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              var url = '${display_list[index].url!}';
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
                           ),
+                          ElevatedButton(
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('courses')
+                                    .add({'course': 'Python разработчик'});
+                              },
+                              child: Text('Добавить'))
                         ],
                       )
                     ],
