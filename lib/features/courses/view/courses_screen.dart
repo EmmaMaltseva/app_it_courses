@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @RoutePage()
 class CoursesScreen extends StatefulWidget {
@@ -16,49 +17,6 @@ class CoursesScreen extends StatefulWidget {
 }
 
 class _CoursesScreenState extends State<CoursesScreen> {
-  static List<CourseModel> main_courses_list = [
-    CourseModel(
-        "Профессия разработчик на Python",
-        "assets/svg/skypro.svg",
-        'онлайн вебинары',
-        '10 месяцев',
-        '4 часа в неделю',
-        137900,
-        'https://sky.pro/courses/programming/python-web-course-video'),
-    CourseModel(
-        "Большая разработчик на Python",
-        "assets/svg/geekbrains.svg",
-        'онлайн вебинары',
-        '10 месяцев',
-        '4 часа в неделю',
-        137900,
-        'https://sky.pro/courses/programming/python-web-course-video'),
-    CourseModel(
-        "АААА разработчик на Python",
-        "assets/svg/skillbox.svg",
-        'онлайн вебинары',
-        '10 месяцев',
-        '4 часа в неделю',
-        137900,
-        'https://sky.pro/courses/programming/python-web-course-video'),
-    CourseModel(
-        "Умная разработчик на Python",
-        "assets/svg/skillfactorysvg.svg",
-        'онлайн вебинары',
-        '10 месяцев',
-        '4 часа в неделю',
-        137900,
-        'https://sky.pro/courses/programming/python-web-course-video'),
-    CourseModel(
-        "Профессия разработчик на Python",
-        "assets/svg/skypro.svg",
-        'онлайн вебинары',
-        '10 месяцев',
-        '4 часа в неделю',
-        137900,
-        'https://sky.pro/courses/programming/python-web-course-video'),
-  ];
-
   List<CourseModel> display_list = List.from(main_courses_list);
 
   //функция обновления display_list выводимого списка курсов
@@ -90,7 +48,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                 "assets/svg/logo.svg",
               ),
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(80),
+                preferredSize: const Size.fromHeight(81),
                 child: Container(
                   margin: EdgeInsets.only(bottom: 12, top: 12),
                   width: double.infinity,
@@ -137,7 +95,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                         children: [
                           SvgPicture.asset(
                             display_list[index].logo!,
-                            width: 100,
+                            width: 120,
                           ),
                           Flexible(
                             child: Padding(
@@ -145,7 +103,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
                               child: Text(
                                 display_list[index].title!,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.w300, fontSize: 15),
+                                    fontWeight: FontWeight.w400, fontSize: 17),
                               ),
                             ),
                           ),
@@ -158,41 +116,51 @@ class _CoursesScreenState extends State<CoursesScreen> {
                         children: [
                           Row(
                             children: [
-                              Text('Формат: '),
+                              Text(
+                                'Формат: ',
+                                style: TextStyle(color: Colors.grey[500]),
+                              ),
                               Text(
                                 '${display_list[index].format!}',
                                 style: TextStyle(
-                                    fontSize: 13, color: Colors.black),
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Text('Длительность: '),
+                              Text(
+                                'Длительность: ',
+                                style: TextStyle(color: Colors.grey[500]),
+                              ),
                               Text(
                                 '${display_list[index].dlitelnost!}',
                                 style: TextStyle(
-                                    fontSize: 13, color: Colors.black),
+                                    fontSize: 15, color: Colors.black),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Text('Интенсивность: '),
+                              Text('Интенсивность: ',
+                                  style: TextStyle(color: Colors.grey[500])),
                               Text(
                                 '${display_list[index].intensivnost!}',
                                 style: TextStyle(
-                                    fontSize: 13, color: Colors.black),
+                                    fontSize: 15, color: Colors.black),
                               ),
                             ],
                           ),
                           Row(
                             children: [
-                              Text('Стоимость: '),
+                              Text('Стоимость: ',
+                                  style: TextStyle(color: Colors.grey[500])),
                               Text(
                                 '${display_list[index].price!}',
                                 style: TextStyle(
-                                    fontSize: 13, color: Colors.black),
+                                    fontSize: 15, color: Colors.black),
                               ),
                             ],
                           ),
@@ -221,7 +189,14 @@ class _CoursesScreenState extends State<CoursesScreen> {
                                   Color.fromARGB(255, 130, 112, 255),
                               elevation: 0,
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              var url = '${display_list[index].url!}';
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
                           ),
                         ],
                       )
