@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:app_it_courses/features/promotions/model/promotion_model.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 @RoutePage()
 class PromotionScreen extends StatefulWidget {
@@ -76,15 +78,18 @@ class _PromotionScreenState extends State<PromotionScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 10),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.watch_later_outlined),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5.0),
-                              child: Text(
-                                '${display_list[index].subtitle!}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: Text(
+                                  '${display_list[index].subtitle!}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
@@ -95,21 +100,46 @@ class _PromotionScreenState extends State<PromotionScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.all(15.0),
-                            padding: const EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 140, 153, 174))),
-                            child: Text(
-                              '${display_list[index].kod!}',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
+                            margin: EdgeInsets.symmetric(vertical: 15),
+                            child: DottedBorder(
+                              borderType: BorderType.RRect,
+                              dashPattern: [7, 7],
+                              color: Colors.grey[400]!,
+                              strokeWidth: 2,
+                              child: Container(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text(
+                                  '${display_list[index].kod!}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          Icon(Icons.copy)
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                              elevation: 0,
+                            ),
+                            child: Icon(Icons.copy),
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(
+                                      text: '${display_list[index].kod!}'))
+                                  .then((value) {
+                                final snackBar = SnackBar(
+                                  content: Text('Copied to Clipboard'),
+                                  action: SnackBarAction(
+                                    label: 'Undo',
+                                    onPressed: () {},
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              });
+                            },
+                          )
                         ],
                       ),
                       ElevatedButton(
