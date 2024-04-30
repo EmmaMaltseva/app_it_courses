@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:app_it_courses/features/schools/model/schools_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 @RoutePage()
@@ -65,89 +67,97 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
                         display_list[index].logo!,
                         width: 120,
                       ),
-                      Column(
-                        children: [
-                          Container(
-                            child: Text(
-                              '${display_list[index].title!}',
-                              textAlign: TextAlign.start,
-                              style: const TextStyle(
-                                backgroundColor: Colors.green,
-                                fontSize: 25,
-                                color: Colors.black,
-                              ),
+                      IntrinsicHeight(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${display_list[index].title}',
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                    color: Colors.black87, fontSize: 20),
+                                overflow: TextOverflow.ellipsis),
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                  ),
-                                  Icon(
-                                    Icons.star_half_sharp,
-                                    color: Colors.yellow,
-                                  ),
-                                ],
-                              )),
-                              Text('${display_list[index].countReview} отзыва',
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(118, 0, 0, 0),
-                                  ))
-                            ],
-                          ),
-                          Divider(
-                            color: Colors.grey,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.school,
-                                    color: Color.fromARGB(255, 187, 187, 187),
-                                  ),
-                                  Text(
-                                      '${display_list[index].countCourse} курса',
-                                      style: const TextStyle(
-                                        color: Color.fromARGB(118, 0, 0, 0),
-                                      ))
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.card_giftcard,
-                                    color: Color.fromARGB(255, 187, 187, 187),
-                                  ),
-                                  Text(
-                                      '${display_list[index].countPromo} акция',
-                                      style: const TextStyle(
-                                        color: Color.fromARGB(118, 0, 0, 0),
-                                      ))
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      )
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.yellow,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.yellow,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.yellow,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.yellow,
+                                    ),
+                                    Icon(
+                                      Icons.star_half_sharp,
+                                      color: Colors.yellow,
+                                    ),
+                                  ],
+                                )),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                    '${display_list[index].countReview} отзывов',
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(118, 0, 0, 0),
+                                    ))
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.school,
+                                      color: Color.fromARGB(255, 187, 187, 187),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                        '${display_list[index].countCourse} курсов',
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(118, 0, 0, 0),
+                                        ))
+                                  ],
+                                ),
+                                SizedBox(width: 20),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.card_giftcard,
+                                      color: Color.fromARGB(255, 187, 187, 187),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                        '${display_list[index].countPromo} акции',
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(118, 0, 0, 0),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
