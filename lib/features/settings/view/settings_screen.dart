@@ -2,9 +2,7 @@ import 'package:app_it_courses/features/settings/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:app_it_courses/features/promotions/model/promotion_model.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 
 @RoutePage()

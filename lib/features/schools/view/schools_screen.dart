@@ -66,7 +66,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
                     children: [
                       SvgPicture.asset(
                         display_list[index].logo!,
-                        width: 100,
+                        width: 120,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
